@@ -2,12 +2,20 @@ package com.gillianocampos.workshopmondo.domain;
 
 import java.io.Serializable;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+//colocar Anotation @Document para indicar que essa classe corresponde a uma coleção ou tabela la no mongoDB
+//(collection="user") é opcional se vc nao colocar  automaticamente o springdata mapeia a coleção com o mesmo nome da classe com letra minuscula
+@Document(collection="user")
 public class User implements Serializable {
 
 	//serializable
 	private static final long serialVersionUID = 1L;
 	
 	//atributos
+	//colocar @Id em cima do atributo que for a chave
+	@Id
 	private String id;
 	private String name;
 	private String email;
