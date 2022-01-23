@@ -69,5 +69,6 @@ public class UserResource {
 		//abrir o mongocompass proximo passo criar a base de dados no mongocompass as coleço~es (tabelas) User,etc ja criamos
 		//inserir alguns dados de usuarios como maria,alex,etc em addData e insertDocument e clicar no menu
 		//agora rodar no postman e testar o endpoint localhost:8080/users ja vem com id criado pelo banco de dados
+		//criar uma classe de configuração chamada Instantiation sempre que iniciar o projeto sera carregado alguns usuarios no pacote config
 	}
 }
