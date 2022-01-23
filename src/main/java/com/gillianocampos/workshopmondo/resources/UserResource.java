@@ -1,12 +1,11 @@
 package com.gillianocampos.workshopmondo.resources;
 
-
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gillianocampos.workshopmondo.domain.User;
 import com.gillianocampos.workshopmondo.dto.UserDTO;
 import com.gillianocampos.workshopmondo.services.UserService;
-
 
 @RestController // para falar que esta classe será um recurso Rest
 @RequestMapping(value = "/users") // para falar qual o caminho do endpoint
@@ -35,7 +33,8 @@ public class UserResource {
 	// ResponseEntity com a lista dentro que ja torna uma respota no http mais certa
 	// com cabeçalhos etc. no postman mostra direito esses cabeçalhos e dados
 	// formatados
-	//apaguei tbm e agora pus a lista DTO par retornar public ResponseEntity<List<User>> findAll() {
+	// apaguei tbm e agora pus a lista DTO par retornar public
+	// ResponseEntity<List<User>> findAll() {
 	public ResponseEntity<List<UserDTO>> findAll() {
 		// esse objeto ResponseEntity com a lista dentro ele encapsula a lista ja com
 		// cabeçalho para retornar uma resposta no http
@@ -56,11 +55,16 @@ public class UserResource {
 		// guardar essa lista
 		List<User> lista = service.findAll();
 
-		//para dto eu tenho que converter essa lista de User para UserDTO usando lambda
-		//lista.stream para transformar numa stream que é uma coleção compativel com expressoes lambda a partir do java 8
-		//map pega cada objeto x da minha lista original x pode ser nome que quiser e para cada objeto x eu retorno um new UserDTO passando o x como argumento para chamar o construtor que recebe um User no paramentro na classe UserDTO
-		//collect(Collectors.toList() volta a lista que esta stream para lista novamente
-		//entao resumindo passa a lista para stream para usar lambda depois retorna para lista novamente assim que acabar de usar a lambda
+		// para dto eu tenho que converter essa lista de User para UserDTO usando lambda
+		// lista.stream para transformar numa stream que é uma coleção compativel com
+		// expressoes lambda a partir do java 8
+		// map pega cada objeto x da minha lista original x pode ser nome que quiser e
+		// para cada objeto x eu retorno um new UserDTO passando o x como argumento para
+		// chamar o construtor que recebe um User no paramentro na classe UserDTO
+		// collect(Collectors.toList() volta a lista que esta stream para lista
+		// novamente
+		// entao resumindo passa a lista para stream para usar lambda depois retorna
+		// para lista novamente assim que acabar de usar a lambda
 		List<UserDTO> listaDTO = lista.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
 		// metodo retona a minha lista mas troquei este retorno pq trocou este metodo
 		// para ResponseEntity
@@ -69,16 +73,41 @@ public class UserResource {
 		// instancia o ResponseEntity jacom codigo de resposta http que a resposta
 		// ocorreu com sucesso e na frente body para definir qual vai ser o corpo da
 		// resposta no caso a lista
-		//agora como mudei vou retornar a listaDTO
-		return ResponseEntity.ok().body(listaDTO);//depois vai no postman e ver se aparece os 3 Users
-		
-		//em aplication.properties colocar os dados de conexão com o banco
-		//spring.data.mongodb.uri=mongodb://localhost:27017/workshop_mongo sem espaços
-		//tem que estar igual a porta o nome da base workshop_mongo
+		// agora como mudei vou retornar a listaDTO
+		return ResponseEntity.ok().body(listaDTO);// depois vai no postman e ver se aparece os 3 Users
+
+		// em aplication.properties colocar os dados de conexão com o banco
+		// spring.data.mongodb.uri=mongodb://localhost:27017/workshop_mongo sem espaços
+		// tem que estar igual a porta o nome da base workshop_mongo
 		// depois na linha de comando cmd digitar mongod para ativar
-		//abrir o mongocompass proximo passo criar a base de dados no mongocompass as coleço~es (tabelas) User,etc ja criamos
-		//inserir alguns dados de usuarios como maria,alex,etc em addData e insertDocument e clicar no menu
-		//agora rodar no postman e testar o endpoint localhost:8080/users ja vem com id criado pelo banco de dados
-		//criar uma classe de configuração chamada Instantiation sempre que iniciar o projeto sera carregado alguns usuarios no pacote config
+		// abrir o mongocompass proximo passo criar a base de dados no mongocompass as
+		// coleço~es (tabelas) User,etc ja criamos
+		// inserir alguns dados de usuarios como maria,alex,etc em addData e
+		// insertDocument e clicar no menu
+		// agora rodar no postman e testar o endpoint localhost:8080/users ja vem com id
+		// criado pelo banco de dados
+		// criar uma classe de configuração chamada Instantiation sempre que iniciar o
+		// projeto sera carregado alguns usuarios no pacote config
+	}
+
+	// metodo para retornar um usuario por Id agora quase igual a primeiro findAll
+	// value="/{id}" indica que este metodo tera caminbho /users/id
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	// não vai rtornar lsta agora apenas um UserDTO e vai receber como arguemnto uma
+	// string id
+	// @PathVariable para eu falar que esse id tem que casar com id recebido na url
+	// tem que por essa anotation
+	public ResponseEntity<UserDTO> findById(@PathVariable String id) {
+		// criar um objeto usuario recebendo o service acima .findById com paraemntro id
+		// que recebi no metodo
+		User obj = service.findById(id);
+		// retorna o obj convertido para UserDTO
+		// new UserDTO(obj) para converter obj para UserDTO fazer new UserDTO passando o
+		// objeto como argumento
+		return ResponseEntity.ok().body(new UserDTO(obj));
+		//agora testa no postman chamando todos usuarios http://localhost:8080/users
+		//e tbm passando o id da maria por exemplo  http://localhost:8080/users/61edda61e1b8fa5bd4d044ca
+		// agora passndo um id que nao existe http://localhost:8080/users/4 da um erro 500 não podemos deixar tem que retornar 404 não encontrado
+		//criar as classes StandardError e ResourceExceptionHandler no subpacote .exception
 	}
 }

@@ -1,0 +1,74 @@
+package com.gillianocampos.workshopmondo.resources.exceptions;
+
+import java.io.Serializable;
+
+//classe que tem uma estrutura de erros com uma estrutura de 5 atributos abaixo igual erro 500 ue deu no postam
+public class StandardError implements Serializable {
+
+	//serializable
+	private static final long serialVersionUID = 1L;
+	
+	//atributos 
+	private Long timestamp;
+	private Integer status;
+	private String error;
+	private String message;
+	private String path;
+	
+	//construtor vazio
+	public StandardError() {
+		
+	}
+	//construtor com argumentos
+
+	public StandardError(Long timestamp, Integer status, String error, String message, String path) {
+		super();
+		this.timestamp = timestamp;
+		this.status = status;
+		this.error = error;
+		this.message = message;
+		this.path = path;
+	}
+
+	//get e set
+	public Long getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Long timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+	
+}
