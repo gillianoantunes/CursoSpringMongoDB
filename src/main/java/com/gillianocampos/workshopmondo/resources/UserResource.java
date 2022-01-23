@@ -3,6 +3,7 @@ package com.gillianocampos.workshopmondo.resources;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gillianocampos.workshopmondo.domain.User;
+import com.gillianocampos.workshopmondo.dto.UserDTO;
 import com.gillianocampos.workshopmondo.services.UserService;
 
 
@@ -33,7 +35,8 @@ public class UserResource {
 	// ResponseEntity com a lista dentro que ja torna uma respota no http mais certa
 	// com cabeçalhos etc. no postman mostra direito esses cabeçalhos e dados
 	// formatados
-	public ResponseEntity<List<User>> findAll() {
+	//apaguei tbm e agora pus a lista DTO par retornar public ResponseEntity<List<User>> findAll() {
+	public ResponseEntity<List<UserDTO>> findAll() {
 		// esse objeto ResponseEntity com a lista dentro ele encapsula a lista ja com
 		// cabeçalho para retornar uma resposta no http
 
@@ -53,6 +56,12 @@ public class UserResource {
 		// guardar essa lista
 		List<User> lista = service.findAll();
 
+		//para dto eu tenho que converter essa lista de User para UserDTO usando lambda
+		//lista.stream para transformar numa stream que é uma coleção compativel com expressoes lambda a partir do java 8
+		//map pega cada objeto x da minha lista original x pode ser nome que quiser e para cada objeto x eu retorno um new UserDTO passando o x como argumento para chamar o construtor que recebe um User no paramentro na classe UserDTO
+		//collect(Collectors.toList() volta a lista que esta stream para lista novamente
+		//entao resumindo passa a lista para stream para usar lambda depois retorna para lista novamente assim que acabar de usar a lambda
+		List<UserDTO> listaDTO = lista.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
 		// metodo retona a minha lista mas troquei este retorno pq trocou este metodo
 		// para ResponseEntity
 		// return lista;
@@ -60,7 +69,8 @@ public class UserResource {
 		// instancia o ResponseEntity jacom codigo de resposta http que a resposta
 		// ocorreu com sucesso e na frente body para definir qual vai ser o corpo da
 		// resposta no caso a lista
-		return ResponseEntity.ok().body(lista);
+		//agora como mudei vou retornar a listaDTO
+		return ResponseEntity.ok().body(listaDTO);//depois vai no postman e ver se aparece os 3 Users
 		
 		//em aplication.properties colocar os dados de conexão com o banco
 		//spring.data.mongodb.uri=mongodb://localhost:27017/workshop_mongo sem espaços
