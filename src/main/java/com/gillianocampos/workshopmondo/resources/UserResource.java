@@ -1,18 +1,22 @@
 package com.gillianocampos.workshopmondo.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.gillianocampos.workshopmondo.domain.User;
 import com.gillianocampos.workshopmondo.dto.UserDTO;
 import com.gillianocampos.workshopmondo.services.UserService;
+
 
 @RestController // para falar que esta classe será um recurso Rest
 @RequestMapping(value = "/users") // para falar qual o caminho do endpoint
@@ -105,9 +109,33 @@ public class UserResource {
 		// new UserDTO(obj) para converter obj para UserDTO fazer new UserDTO passando o
 		// objeto como argumento
 		return ResponseEntity.ok().body(new UserDTO(obj));
-		//agora testa no postman chamando todos usuarios http://localhost:8080/users
-		//e tbm passando o id da maria por exemplo  http://localhost:8080/users/61edda61e1b8fa5bd4d044ca
-		// agora passndo um id que nao existe http://localhost:8080/users/4 da um erro 500 não podemos deixar tem que retornar 404 não encontrado
-		//criar as classes StandardError e ResourceExceptionHandler no subpacote .exception
+		// agora testa no postman chamando todos usuarios http://localhost:8080/users
+		// e tbm passando o id da maria por exemplo
+		// http://localhost:8080/users/61edda61e1b8fa5bd4d044ca
+		// agora passndo um id que nao existe http://localhost:8080/users/4 da um erro
+		// 500 não podemos deixar tem que retornar 404 não encontrado
+		// criar as classes StandardError e ResourceExceptionHandler no subpacote
+		// .exception
+
 	}
+
+	// metodo inserir post
+	@RequestMapping(method = RequestMethod.POST)// ou @PostMapping
+	//a inserção vai retornar void ou seja um objeto vazio e como argumento recebe um UserDto
+	//@RequestBody para que esse endpoint aceite este objeto DTO
+	public ResponseEntity<Void> inserir(@RequestBody UserDTO objDto) {
+		//converter dto para user
+		User obj = service.fromDTO(objDto);
+		obj = service.inserir(obj);
+		//retornar uma resposta vazio pegando o endereço localização do novo objeto que inseri com codigo 201 created
+		//esse uri traz o caminho do objeto inserido com id dele no postman quando der o post na aba headers
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();	
+		//no postman execuat metodo post passando json abaixo para inserir na aba body e mudar para json
+		//depois pesquisar no get se o os 4 objetos sao mostrado 
+		//{
+			//"name":"Jose",
+			//"email":"Jose@gmail.com"  
+			//}
+}
 }

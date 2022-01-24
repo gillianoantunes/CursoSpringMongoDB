@@ -21,7 +21,7 @@ public class UserDTO implements Serializable{
 	public UserDTO() {
 		
 	}
-	//construtor  recebendo como argumento um objeto do tipo User para ter forma automazida de instanciar UserDTO a partir do User
+	//construtor  recebendo como argumento um objeto do tipo User para ter forma automatizada de instanciar UserDTO a partir do User
 	public UserDTO(User obj) {
 		id = obj.getId();
 		name = obj.getName();

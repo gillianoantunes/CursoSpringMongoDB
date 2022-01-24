@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gillianocampos.workshopmondo.domain.User;
+import com.gillianocampos.workshopmondo.dto.UserDTO;
 import com.gillianocampos.workshopmondo.repository.UserRepository;
 import com.gillianocampos.workshopmondo.services.exception.ObjectNotFoundException;
 
@@ -39,8 +40,19 @@ public class UserService {
 		// se for nulo não exite o usuario lança exceção personalizada que fiz na clase
 		// ObjectNotFoundException
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
-
-		// agora em UserResource retornar o dto no metodo findById
-
 	}
+
+	// agora em UserResource retornar o dto no metodo findById
+	// abaixo incluir metodo para inserir post que vai receber um User para inserir
+	public User inserir(User obj) {
+		// o repositorio ja tem operação insert nele
+		return repo.insert(obj);
+	}
+	// depois de inserir implementar um FromDTO e como aqui no User Service eu ja tenho repositorio de acesso a dados eu vou fazer aqui ao inves de fazer na classe UserDTO
+	//vai receber um objDTO e retornar um new User recebendo o dados do DTO como paramentro
+	//metodo converte UserDto para User
+	public User fromDTO(UserDTO objDto) {
+		return new User(objDto.getId(), objDto.getName(),objDto.getEmail());
+	}
+	//em UserResource implementar o método inserir
 }
