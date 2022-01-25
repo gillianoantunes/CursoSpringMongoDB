@@ -58,6 +58,33 @@ public class UserService {
 		//agora implementar no UserResource		
 		
 	}
+	
+	//metodo update esse obj do parametro nao tem nenhum vinculo com o banco eu vou buscar esse ojjeto para alterar no banco
+	public User update(User obj) {
+		
+		//instanciar um obj novo que vai buscar no banco igual o id que veio no paramentro do obj
+		User newobj = findById(obj.getId());
+		//pegar os dados e atualizar o newoj depois salvar vou criar um metodo UpdateData passar o mouse para criar o metodo
+		//esse metodo copia os dados do obj para new obj
+		updateData(newobj,obj);
+		//agora salvo para atualizar
+		return repo.save(newobj);
+		
+		
+	}
+	//passa os dados do obj para o newobj para atualizar
+	private void updateData(User newobj, User obj) {
+		//so o id do obj que não vou mudar.
+		newobj.setName(obj.getName());
+		newobj.setEmail(obj.getEmail());
+		
+	}
+	//agora em UserResource implementar o update
+	
+	
+	
+	
+	
 	// depois de inserir implementar um FromDTO e como aqui no User Service eu ja tenho repositorio de acesso a dados eu vou fazer aqui ao inves de fazer na classe UserDTO
 	//vai receber um objDTO e retornar um new User recebendo o dados do DTO como paramentro
 	//metodo converte UserDto para User

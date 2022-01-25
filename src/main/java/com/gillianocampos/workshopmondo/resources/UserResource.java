@@ -125,6 +125,7 @@ public class UserResource {
 	// @RequestBody para que esse endpoint aceite este objeto DTO
 	public ResponseEntity<Void> inserir(@RequestBody UserDTO objDto) {
 		// converter dto para user
+
 		User obj = service.fromDTO(objDto);
 		obj = service.inserir(obj);
 		// retornar uma resposta vazio pegando o endereço localização do novo objeto que
@@ -145,13 +146,30 @@ public class UserResource {
 	// delete
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable String id) {
-		 service.delete(id);
-		 //não retorna nada apenas codigo 204 noContent
+		service.delete(id);
+		// não retorna nada apenas codigo 204 noContent
 		return ResponseEntity.noContent().build();
-		
-		//rodar e tentar deletar no postman chamando usando id que nao existe delete http://localhost:8080/users/78785
-		//dara codigo 404 nao encontrado, correto entao
-		//agora da um get pra pegar um id e depois da um delete usando um id existente
-		//deu codigo 204 nocontent entao certo e agora dar um get pra ver se o usuario foi deletado
+
+		// rodar e tentar deletar no postman chamando usando id que nao existe delete
+		// http://localhost:8080/users/78785
+		// dara codigo 404 nao encontrado, correto entao
+		// agora da um get pra pegar um id e depois da um delete usando um id existente
+		// deu codigo 204 nocontent entao certo e agora dar um get pra ver se o usuario
+		// foi deletado
+	}
+
+	// metodo update put colocar id pq para alterar precisa especificar o id
+	@RequestMapping(value = "/{id}",method = RequestMethod.PUT) // ou @PostMapping
+	public ResponseEntity<Void> update(@RequestBody UserDTO objDto,@PathVariable String id) {
+		//instanciar um obj pelo objDto que vira na requisição
+		User obj = service.fromDTO(objDto);
+		//antes de chamar o update eu vou fazer obj.setId para ter o ID na requisição que veio no parametro
+		obj.setId(id);
+		//chamar o update agora
+		obj = service.update(obj);
+		//colocar uma resposta de noContent igual no delete
+		// não retorna nada apenas codigo 204 noContent
+		return ResponseEntity.noContent().build();
+		//fazer um put no postman com algum codigo e passar no corpo a alteração do nome e email , dara resposta noContent 204 tudo certo e depois da um get pra ver se alterou
 	}
 }
