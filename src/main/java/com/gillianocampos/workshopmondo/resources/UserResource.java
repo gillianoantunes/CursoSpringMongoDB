@@ -17,7 +17,6 @@ import com.gillianocampos.workshopmondo.domain.User;
 import com.gillianocampos.workshopmondo.dto.UserDTO;
 import com.gillianocampos.workshopmondo.services.UserService;
 
-
 @RestController // para falar que esta classe será um recurso Rest
 @RequestMapping(value = "/users") // para falar qual o caminho do endpoint
 public class UserResource {
@@ -120,22 +119,39 @@ public class UserResource {
 	}
 
 	// metodo inserir post
-	@RequestMapping(method = RequestMethod.POST)// ou @PostMapping
-	//a inserção vai retornar void ou seja um objeto vazio e como argumento recebe um UserDto
-	//@RequestBody para que esse endpoint aceite este objeto DTO
+	@RequestMapping(method = RequestMethod.POST) // ou @PostMapping
+	// a inserção vai retornar void ou seja um objeto vazio e como argumento recebe
+	// um UserDto
+	// @RequestBody para que esse endpoint aceite este objeto DTO
 	public ResponseEntity<Void> inserir(@RequestBody UserDTO objDto) {
-		//converter dto para user
+		// converter dto para user
 		User obj = service.fromDTO(objDto);
 		obj = service.inserir(obj);
-		//retornar uma resposta vazio pegando o endereço localização do novo objeto que inseri com codigo 201 created
-		//esse uri traz o caminho do objeto inserido com id dele no postman quando der o post na aba headers
+		// retornar uma resposta vazio pegando o endereço localização do novo objeto que
+		// inseri com codigo 201 created
+		// esse uri traz o caminho do objeto inserido com id dele no postman quando der
+		// o post na aba headers
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).build();	
-		//no postman execuat metodo post passando json abaixo para inserir na aba body e mudar para json
-		//depois pesquisar no get se o os 4 objetos sao mostrado 
-		//{
-			//"name":"Jose",
-			//"email":"Jose@gmail.com"  
-			//}
-}
+		return ResponseEntity.created(uri).build();
+		// no postman execuat metodo post passando json abaixo para inserir na aba body
+		// e mudar para json
+		// depois pesquisar no get se o os 4 objetos sao mostrado
+		// {
+		// "name":"Jose",
+		// "email":"Jose@gmail.com"
+		// }
+	}
+
+	// delete
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable String id) {
+		 service.delete(id);
+		 //não retorna nada apenas codigo 204 noContent
+		return ResponseEntity.noContent().build();
+		
+		//rodar e tentar deletar no postman chamando usando id que nao existe delete http://localhost:8080/users/78785
+		//dara codigo 404 nao encontrado, correto entao
+		//agora da um get pra pegar um id e depois da um delete usando um id existente
+		//deu codigo 204 nocontent entao certo e agora dar um get pra ver se o usuario foi deletado
+	}
 }

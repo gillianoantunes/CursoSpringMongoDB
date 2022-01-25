@@ -48,6 +48,16 @@ public class UserService {
 		// o repositorio ja tem operação insert nele
 		return repo.insert(obj);
 	}
+	
+	//metodo delete recebendo um id como argumentp	
+	public void delete(String id) {
+		//para tratar exceçao caso id a ser deletado não exista eu vou aproveitar o metodo findById acima para ele fazer uma busca se não encontrar o objeto ja lança a exceção
+		findById(id);
+		//função que ja existe no repositorio deleteById
+		repo.deleteById(id);
+		//agora implementar no UserResource		
+		
+	}
 	// depois de inserir implementar um FromDTO e como aqui no User Service eu ja tenho repositorio de acesso a dados eu vou fazer aqui ao inves de fazer na classe UserDTO
 	//vai receber um objDTO e retornar um new User recebendo o dados do DTO como paramentro
 	//metodo converte UserDto para User
@@ -55,4 +65,6 @@ public class UserService {
 		return new User(objDto.getId(), objDto.getName(),objDto.getEmail());
 	}
 	//em UserResource implementar o método inserir
+	
+	
 }
