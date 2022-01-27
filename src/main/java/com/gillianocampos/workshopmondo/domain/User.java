@@ -1,8 +1,11 @@
 package com.gillianocampos.workshopmondo.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 //colocar Anotation @Document para indicar que essa classe corresponde a uma coleção ou tabela la no mongoDB
@@ -19,6 +22,15 @@ public class User implements Serializable {
 	private String id;
 	private String name;
 	private String email;
+	
+	//esse atributo dentro de usuario User terá posts e instanciar quando é lista
+	//quando é coleção temos que iniciar instanciar
+	//criar get e set
+	  @DBRef(lazy = true) //@DBRef no Spring Data para voce falar que um atributo esta referenciando outra coleção ou tabela do banco MongoDB no caso classe Post, estou aninhando 
+	//(lazy = true) como estamos referenciando uma coleção nao quero que quando recuperar um usuario sempre retornar a lista de post para evitar muitos dados trafego nesse caso 
+	//(lazy = true) garante que os post so serao carregados se eu acessa-los
+	  //agora na classe instantiation refatorar incluindo as associções dos posts esse atributo que acabei de fazer
+	private List<Post> posts = new ArrayList<>();
 	
 	//construtores vazio e com argumentos
 	public User() {
@@ -57,6 +69,14 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
+	//get e set da lista de posts
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
 	
 	//hashcode e equals
 	@Override
@@ -83,6 +103,7 @@ public class User implements Serializable {
 			return false;
 		return true;
 	}
+
 	
 	
 }

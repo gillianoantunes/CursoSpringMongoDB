@@ -60,7 +60,15 @@ public class Instantiation implements CommandLineRunner {
 
 		// ver no mongocompass e atualizar e vera os users instanciado. no postman tbm
 		// toda vez que rodar ele deleta os users e posts que tiver e inserir esses 3 users e inseri os post atrelados com o author
-		//verificar no mongodbCompass as tabelas craiadas e os objetos user e os posts atrelado com o usuario do post uma copia do user que fez o post
+	  //verificar no mongodbCompass as tabelas craiadas e os objetos user e os posts atrelado com o usuario do post uma copia do user que fez o post
+	
+	//o atributo post que coloquei na classe User para referenciar os post da classe post
+	  //o objeto User maria estamos salvando o post1 e post2 qu e é dela
+		maria.getPosts().addAll(Arrays.asList(post1,post2));
+		//salvar no objeto maria  e agora as referencias de post da maria serao salvas no objeto maria
+		userRepository.save(maria);
+	
 	}
+	
 
 }
