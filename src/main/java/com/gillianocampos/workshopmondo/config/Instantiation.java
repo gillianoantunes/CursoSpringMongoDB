@@ -68,6 +68,7 @@ public class Instantiation implements CommandLineRunner {
 		//salvar no objeto maria  e agora as referencias de post da maria serao salvas no objeto maria
 		userRepository.save(maria);
 	
+		//agora fazer a consulta na maria no MongoCompass para ver se salvou os posts da maria
 	}
 	
 

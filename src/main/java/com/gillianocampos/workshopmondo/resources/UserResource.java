@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.gillianocampos.workshopmondo.domain.Post;
 import com.gillianocampos.workshopmondo.domain.User;
 import com.gillianocampos.workshopmondo.dto.UserDTO;
 import com.gillianocampos.workshopmondo.services.UserService;
@@ -172,4 +173,17 @@ public class UserResource {
 		return ResponseEntity.noContent().build();
 		//fazer um put no postman com algum codigo e passar no corpo a alteração do nome e email , dara resposta noContent 204 tudo certo e depois da um get pra ver se alterou
 	}
+	
+	//metodo para retornar a lista de posts associada com o User que veio no id)
+	@RequestMapping(value = "/{id}/posts", method = RequestMethod.GET)
+	public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+		//busca o user por id
+		User obj = service.findById(id);
+		return ResponseEntity.ok().body(obj.getPosts());
+		//para testar rodar e ir no postaman e colocar caminho passando o id por exemplo da maria / post igual esta em @RequestMapping(value = "/{id}/posts"
+		//ficara assim no postman http://localhost:8080/users/61f72019a3b60d0e4f143023/posts esse numero grande é o id da maria retornará os posts dela
+		
+	}
 }
+
+
