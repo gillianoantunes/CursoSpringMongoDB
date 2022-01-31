@@ -180,9 +180,7 @@ public class UserResource {
 		//busca o user por id
 		User obj = service.findById(id);
 		return ResponseEntity.ok().body(obj.getPosts());
-		//para testar rodar e ir no postaman e colocar caminho passando o id por exemplo da maria / post igual esta em @RequestMapping(value = "/{id}/posts"
-		//ficara assim no postman http://localhost:8080/users/61f72019a3b60d0e4f143023/posts esse numero grande é o id da maria retornará os posts dela
-		
+		//para testar rodar e ir no postaman e colocar caminho acia
 	}
 }
 
