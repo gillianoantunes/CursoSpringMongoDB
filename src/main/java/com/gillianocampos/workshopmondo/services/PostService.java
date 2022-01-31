@@ -1,5 +1,6 @@
 package com.gillianocampos.workshopmondo.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,11 @@ public class PostService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
 	}
 
-
+	//metodo que declaramos no PostRepository para retornar uma lista de post que contenha a string
+	//pode dar o nome que quiser aqui no metodo..no caso pus mais ou menos parecido com o do PostRepository
+	//vai retornar o repo.findByTitleContaining
+	public List<Post> findByTitle(String text){
+		return repo.findByTitleContainingIgnoreCase(text);
+	}
 	
 }
