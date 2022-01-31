@@ -1,11 +1,14 @@
 package com.gillianocampos.workshopmondo.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.gillianocampos.workshopmondo.dto.AuthorDTO;
+import com.gillianocampos.workshopmondo.dto.CommentDTO;
 
 @Document
 public class Post {
@@ -21,6 +24,9 @@ public class Post {
 	//private User author;
 	//mudei para dto que pega apenas id e name do User fazendo com que não exponha a classe User outros dados
 	private AuthorDTO author;
+	
+	//Lista de CommentDTO incluir este atributo pois fizemos o CommentDTO
+	private List<CommentDTO> comments = new ArrayList<>();
 	public Post() {
 		
 	}
@@ -73,6 +79,14 @@ public class Post {
 	public void setAuthor(AuthorDTO author) {
 		this.author = author;
 	}
+	//get e set da lista de CommentDTO comments
+	public List<CommentDTO> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<CommentDTO> comments) {
+		this.comments = comments;
+	}
 
 	@Override
 	public int hashCode() {
@@ -98,6 +112,8 @@ public class Post {
 			return false;
 		return true;
 	}
+
+
 	
 	//depois fazer o PostRepository só copiar e colar o UserRepository e trocar nome para post
 	//deppois na classe Instantiation criar injeçao do postrepository instanciar os post e salvar

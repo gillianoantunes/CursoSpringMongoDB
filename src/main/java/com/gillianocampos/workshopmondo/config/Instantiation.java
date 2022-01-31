@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import com.gillianocampos.workshopmondo.domain.Post;
 import com.gillianocampos.workshopmondo.domain.User;
 import com.gillianocampos.workshopmondo.dto.AuthorDTO;
+import com.gillianocampos.workshopmondo.dto.CommentDTO;
 import com.gillianocampos.workshopmondo.repository.PostRepository;
 import com.gillianocampos.workshopmondo.repository.UserRepository;
 
@@ -54,6 +55,15 @@ public class Instantiation implements CommandLineRunner {
 		Post post2 = new Post(null, sdf.parse("23/03/2018"), "Bom dia", "Acordei feliz hoje", new AuthorDTO(maria));
 		//mas agora precisamos salvar antes os usuario antes de instanciar oos posts para depois fazer a copia pdo User para DTO, se noa salvar antes o id do user os post ficara null
 		
+		
+		//instanciar os comentarios com o nome dos autores de quem fez o comentario
+		CommentDTO c1 = new CommentDTO("Boa viagem mano", sdf.parse("21/03/2018"), new AuthorDTO(alex));
+		CommentDTO c2 = new CommentDTO("Aproveite", sdf.parse("22/03/2018"), new AuthorDTO(bob));
+		CommentDTO c3 = new CommentDTO("Tenha um ótimo dia", sdf.parse("23/03/2018"), new AuthorDTO(alex));
+		//agora vou colocar os comentarios dentro dos posts. o comentario c1 e c2 é do post1
+		post1.getComments().addAll(Arrays.asList(c1,c2));
+		post2.getComments().addAll(Arrays.asList(c3));
+		//ja estava salvando abaixo os posts verificar no mongo compass
 		
 		// salva os dados do Post no banco no mongodb criando uma lista
 		postRepository.saveAll(Arrays.asList(post1, post2));
