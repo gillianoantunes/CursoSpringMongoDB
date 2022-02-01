@@ -38,7 +38,8 @@ public class PostService {
 	//pode dar o nome que quiser aqui no metodo..no caso pus mais ou menos parecido com o do PostRepository
 	//vai retornar o repo.findByTitleContaining
 	public List<Post> findByTitle(String text){
-		return repo.findByTitleContainingIgnoreCase(text);
+		//apaguei para chamar outro metodo que faz mesma coisa de uma maneira diferente return repo.findByTitleContainingIgnoreCase(text);
+		 return repo.searchTitle(text);//chamando searchTitle agora e rodar e no postman fazer a consulta de palavras nos post http://localhost:8080/posts/titlesearch?text=bom%20dia
 	}
 	
 }

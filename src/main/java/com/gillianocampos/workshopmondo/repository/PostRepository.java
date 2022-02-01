@@ -3,6 +3,7 @@ package com.gillianocampos.workshopmondo.repository;
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.gillianocampos.workshopmondo.domain.Post;
@@ -24,4 +25,14 @@ public interface PostRepository extends MongoRepository<Post, String> {
 	//ultimo passo em PostResource implementar o endpoint e testar rodar no postman http://localhost:8080/posts/titlesearch?text=Bom%20dia
 	//ele retorna os posts com Bom dia apenas maiusculo para ignorar maiuscula e minuscula colocar no repository incluir no metodo IgnoreCase
 	//so isso ja basta para nao diferenciar maiuscula e minuscula
+	
+	//fazer a mesma consulta de string nos post de um outro modo pode ser nome quer quiser pois agora este metodo sera personalizado
+  //@query e dentro do parenteses colocar a consulta json que esta nas especificações do mongodb
+	//essa consulta eé do mongodb e pode ser usada em qualquer linguagem
+	//title é o nome do campo que quero efetuar a busca 
+	//?0 é o primeiro parametro que veio no metodo, no caso é text so tem 1
+	//options o 'i' serve para ignorar maiusculas e minusculas
+	@Query("{'title':{ $regex: ?0, $options: 'i'}}")
+	List<Post> searchTitle(String text);
+	//agora ir no serviço e trocar a chamada para esse searchtitle
 }
