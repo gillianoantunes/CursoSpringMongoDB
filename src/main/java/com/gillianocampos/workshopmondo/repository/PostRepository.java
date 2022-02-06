@@ -1,5 +1,6 @@
 package com.gillianocampos.workshopmondo.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -35,4 +36,11 @@ public interface PostRepository extends MongoRepository<Post, String> {
 	@Query("{'title':{ $regex: ?0, $options: 'i'}}")
 	List<Post> searchTitle(String text);
 	//agora ir no serviço e trocar a chamada para esse searchtitle
+	
+	//$and testar o atributo date da classe post se as datas estao entre
+	//$gte maior igual dataMin e $lte para pegar testar se data é menor
+	//?0 refere ao text , ?1 ao dataMin e ?2 ad dataMax
+	//$or pra ver se o tex tem em title, body ou coments da classe Post..comments é lista entao comments.text que esta na classe commentsDTO fazendo a busca dentro do texto de cada comentarios
+	@Query("{ $and: [ {date: {$gte:?1} },{date: { $lte:?2} } , { $or: [ {'title':{ $regex: ?0, $options: 'i'}}, {'body':{ $regex: ?0, $options: 'i'}},{'comments.text':{ $regex: ?0, $options: 'i'}} ] } ] }")
+	List<Post> pesquisacompleta(String text, Date dataMin, Date dataMax);
 }

@@ -1,6 +1,6 @@
 package com.gillianocampos.workshopmondo.resources;
 
-import java.net.URLDecoder;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +44,30 @@ public class PostResource {
 		//retorna resposta cujo corpo sera a lista
 		return ResponseEntity.ok().body(lista);
 	}
+	
+	
+	//endpoint para buscar um texto dentro de uma data minima e maxima
+	@RequestMapping(value = "/pesquisacompleta", method = RequestMethod.GET)
+	public ResponseEntity<List<Post>> pesquisaFull(
+			//3 paramentros
+			@RequestParam(value = "text", defaultValue="") String text,
+			@RequestParam(value = "dataMin", defaultValue="") String dataMin,
+			@RequestParam(value = "dataMax", defaultValue="") String dataMax){
+		//a propria variavel text chama o metodo na classe URL chamado decodeParam que encoda o texto
+		text = URL.decodeParam(text);
+		
+		//converte as datas minimas e maxima e joga para uma variavel date chamando o metodo da classe Url chamado converetData
+		//passando a data no parametro 1 e no outro caso der erro joga uma data minima do sitema new Date(0L) 0l data minima
+		Date min = URL.convertedata(dataMin, new Date(0L));
+		//chama o metodo converte data passando a data maxima e se der erro chama o new Date() sem o 0L passando a data atual do sistema
+		Date max = URL.convertedata(dataMax, new Date());
+		//chama o service.pesquisaFull passando data minima e f=data maxima ja correta
+		List<Post> lista = service.pesquisaFull(text, min, max);
+		//retorna resposta cujo corpo sera a lista
+		return ResponseEntity.ok().body(lista);
+	}
+	
+	
 }
 
 
